@@ -199,6 +199,41 @@ contains exactly two $1$s$\}$ with six states
 
 \subsection*{Solution}
 
+\begin{emp}(0,0)
+  node.q0("q0"); q0.c = (2,2);
+  node.q1("q1"); q1.c = q0.c + (-u,-u);
+  node.q2("q2"); q2.c = q0.c + (0,-u);
+  node.q3("q3"); q3.c = q0.c + (0,-2u);
+  node.q4("q4"); q4.c = q0.c + (0,-3u);
+  
+
+  makestart(q0);
+  makefinal(q3,q0);
+
+  % draw the nodes
+  drawboxed(q0,q1,q2,q3,q4);
+  
+  
+     edge(q0,q1,-curve,ZERO);
+     edge(q1,q0,-curve,ZERO);
+     edge(q0,q2,curve,ONE);
+     edge(q2,q3,curve,ONE);
+     edge(q3,q4,curve,ONE);
+     edge(q2,q1,curve,ZERO);
+     edge(q3,q1,curve,ZERO);
+     edge(q4,q1,curve,ZERO);
+     edge(q1,q2,curve,ONE);
+         edge(q2,q3,-50,E);
+     edge(q2,q4,50,E);
+     
+
+      loop(q4,down,ONE);
+
+    
+
+% 
+\end{emp}
+
 \end{empfile}
 \immediate\write18{mpost -tex=latex \jobname}
 \end{document}
