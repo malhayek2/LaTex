@@ -1,0 +1,546 @@
+%
+% Assignment 1b for CS3530 Computational Theory:
+% Finite Automata
+% Fall 2017
+%
+% Problems taken from Sipser
+%
+
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{ae,aecompl}
+\usepackage{emp,ifpdf}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
+
+\ifpdf\DeclareGraphicsRule{*}{mps}{*}{}\fi
+
+\empprelude{input boxes; input theory}
+
+% skip for paragraphs, don't indent
+\addtolength{\parskip}{0.5\baselineskip}
+\parindent=0pt
+
+\begin{document}
+\begin{empfile}
+
+\begin{center}
+\textbf{\Large CS 3530: Assignment 1b} \\[2mm]
+Fall 2017
+\end{center}
+
+\raggedright
+
+Note: In each of the following, you should show and describe the
+simpler DFAs as well as the final NFA that you construct. You must
+follow the steps of each construction precisely. Do not take
+shortcuts or simplify the results. You do not need to show
+intermediate steps.
+
+If a DFA is called for, an NFA is not acceptable. Be sure to include
+\textit{all} states and transitions of a DFA.
+
+\section*{Exercise 1.4c (4 points)}
+
+\subsection*{Problem}
+
+Each of the following languages is the intersection of two simpler
+languages. In each part, construct DFAs for the simpler languages,
+then combine them using the construction discussed in footnote~3
+(page~46) to give the state diagram of a DFA for the language given.
+In all parts $\Sigma=\{a,b\}$.
+
+\begin{itemize}
+\item[c.] Language: $\{w:w$ has an even number of $a$'s and one or
+two $b$'s$\}$
+\end{itemize}
+
+\subsection*{Solution}
+First we determine the DFA of of $\{w:w$ has an even number of $a$'s$\}$, Since we are doing
+
+\begin{emp}(0,0)
+  t := 2cm;
+  node.q0(""); q0.c = origin;
+  node.q1(""); q1.c = q0.c + (t,0);
+  makestart(q0);
+  makefinal(q0);
+  % draw the nodes
+  drawboxed(q0,q1);
+    edge(q0,q1,curve,A);
+  edge(q1,q0,curve,A);
+    loop(q0,up,B);
+  loop(q1,right,B);
+  \end{emp}
+  
+ And we do the same thing for the other language which is $\{w:w$ has one or two $b$'s$\}$
+ 
+ \begin{emp}(0,0)
+   u := 2cm;
+  node.q0(""); q0.c = origin;
+  node.q1(""); q1.c = q0.c + (u,0);
+  node.q2(""); q2.c = q0.c + (2u,0);
+  node.q3(""); q3.c = q0.c + (3u,0);
+
+
+  makestart(q0);
+  makefinal(q1,q2);
+
+  % draw the nodes
+  drawboxed(q0,q1,q2,q3);
+  edge(q0,q1,5,B);
+  edge(q1,q2,5,B);
+  edge(q2,q3,2,B);
+  loop(q0,down,A);
+  loop(q1,down,A);
+  loop(q2,down,A);
+  loop(q3,down,AB);
+ \end{emp}
+ 
+ Now we combine both languages to get $\{w:w$ has an even number of $a$'s and one or
+two $b$'s$\}$
+\begin{emp}(0,0)
+   u := 2cm;
+  node.q0(""); q0.c = origin;
+  node.q1(""); q1.c = q0.c + (u,0);
+  node.q2(""); q2.c = q0.c + (2u,0);
+  node.q3(""); q3.c = q0.c + (3u,0);
+  
+  node.q4(""); q4.c = (0, -u);
+  node.q5(""); q5.c = q0.c + (u,-u);
+  node.q6(""); q6.c = q0.c + (2u,-u);
+  node.q7(""); q7.c = q0.c + (3u,-u);
+
+
+  makestart(q4);
+  makefinal(q5,q6);
+
+  % draw the nodes
+  drawboxed(q0,q1,q2,q3,q4,q5,q6,q7);
+  edge(q0,q1,2,B);
+  edge(q1,q2,2,B);
+  edge(q2,q3,2,B);
+  edge(q4,q5,2,B);
+  edge(q5,q6,2,B);
+  edge(q6,q7,2,B);
+  loop(q3,right,B);
+  loop(q7,right,B);
+  
+  edge(q0,q4,45,A);
+  edge(q4,q0,45,A);
+  edge(q1,q5,45,A);
+  edge(q5,q1,45,A);
+  edge(q2,q6,45,A);
+  edge(q6,q2,45,A);
+  edge(q3,q7,45,A);
+  edge(q7,q3,45,A);
+\end{emp}
+
+
+
+\section*{Exercise 1.5c (4 points)}
+
+\subsection*{Problem}
+
+Each of the following languages is the complement of a simpler
+language. In each part, construct a DFA for the simpler language,
+then use it to give the state diagram of a DFA for the language
+given. In all parts $\Sigma=\{a,b\}$.
+
+\begin{itemize}
+\item[c.] Language: $\{w:w$ contains neither the substrings $ab$ nor
+$ba\}$
+\end{itemize}
+
+\subsection*{Solution}
+First, We determine how to get an $\{w:w$ contains substring $ab\}$ , and then get the opposite language of it 
+\begin{emp}(0,0)
+   u := 2cm;
+  node.q0(""); q0.c = origin;
+  node.q1(""); q1.c = q0.c + (u,0);
+  node.q2(""); q2.c = q0.c + (2u,0);
+
+
+  makestart(q0);
+  makefinal(q2);
+
+  % draw the nodes
+  drawboxed(q0,q1,q2);
+  edge(q0,q1,45,A);
+  edge(q1,q0,45,B);
+  edge(q1,q2,45,B);
+  loop(q0,down,A);
+  loop(q1,down,A);
+  loop(q2,down,AB);
+ 
+  
+\end{emp}
+
+The opposite of that which is $\{w:w$ does not contains the substrings $ab\}$
+
+\begin{emp}(0,0)
+   u := 2cm;
+  node.q0(""); q0.c = origin;
+  node.q1(""); q1.c = q0.c + (u,0);
+  node.q2(""); q2.c = q0.c + (2u,0);
+
+
+  makestart(q0);
+  makefinal(q0,q1);
+
+  % draw the nodes
+  drawboxed(q0,q1,q2);
+  edge(q0,q1,45,A);
+  edge(q1,q0,45,B);
+  edge(q1,q2,45,B);
+  loop(q0,down,A);
+  loop(q1,down,A);
+  loop(q2,down,AB);
+\end{emp}
+
+Determining the language  $\{w:w$ does not contains the substrings $ba\}$, same as the pervious DFA.
+\begin{emp}(0,0)
+   u := 2cm;
+  node.q0(""); q0.c = origin;
+  node.q1(""); q1.c = q0.c + (u,0);
+  node.q2(""); q2.c = q0.c + (2u,0);
+
+
+  makestart(q0);
+  makefinal(q0,q1);
+
+  % draw the nodes
+  drawboxed(q0,q1,q2);
+  edge(q0,q1,45,B);
+  edge(q1,q0,45,A);
+  edge(q1,q2,45,A);
+  loop(q0,down,B);
+  loop(q1,down,B);
+  loop(q2,down,AB);
+\end{emp}
+
+We combine both languages and get the result.
+
+\begin{emp}(0,0)
+   u := 2cm;
+  node.q0(""); q0.c = origin;
+  node.q1(""); q1.c = q0.c + (u,0);
+  node.q2(""); q2.c = q0.c + (2u,0);
+  node.q3(""); q3.c = q0.c + (0,-u);
+
+  makestart(q0);
+  makefinal(q0,q1);
+  makefinal(q3);
+
+  % draw the nodes
+  drawboxed(q0,q1,q2,q3);
+  edge(q0,q1,45,A);
+  edge(q0,q3,2,B);
+  edge(q1,q2,45,B);
+  edge(q3,q2,-50,A);
+  loop(q3,left,B);
+  loop(q1,up,A);
+  loop(q2,up,AB);
+\end{emp}
+\section*{Exercise 1.8b (3 points)}
+
+\subsection*{Problem}
+
+Use the construction given in the proof of Theorem~1.45 to give the
+state diagrams of NFAs recognizing the union of the languages given.
+
+\begin{itemize}
+\item[b.] Language: $L_1\cup L_2$ where $L_1$ is the language from
+1.6c and $L_2$ is the language from 1.6f \\ (note: both language are
+from assignment 1a)
+
+Language from 1.6c: $\{w:w$ contains the substring $0101$, i.e.,
+$w=x0101y$ for some $x$ and $y\}$
+
+Language from 1.6f: $\{w:w$ doesn't contain the substring $110\}$
+\end{itemize}
+
+\subsection*{Solution}
+ $\{w:w$ contains the substring $0101$, i.e., $w=x0101y$ for some $x$ and $y\}$
+
+
+\begin{emp}(0,0)
+  node.q0("q0"); q0.c = origin;
+  node.q1("q1"); q1.c = q0.c + (u,0);
+  node.q2("q2"); q2.c = q0.c + (2u,0);
+  node.q3("q3"); q3.c = q0.c + (3u,0);
+  node.q4("q4"); q4.c = q0.c + (4u,0);
+  makestart(q0);
+  makefinal(q4);
+
+  % draw the nodes
+  drawboxed(q0,q1,q2,q3,q4);
+  edge(q0,q1,2,ZERO);
+  edge(q1,q2,2,ONE);
+  edge(q2,q3,2,ZERO);
+  edge(q3,q4,2,ONE);
+  edge(q3,q1,-45,ZERO);
+  edge(q2,q0,75,ONE);
+  loop(q4,up,ZEROONE);
+  loop(q0,up,ONE);
+  loop(q1,down,ZERO);
+\end{emp}
+
+$\{w:w$ doesn't contain the substring $110\}$
+
+\begin{emp}(0,0)
+  node.q0("q0"); q0.c = origin;
+  node.q1("q1"); q1.c = q0.c + (u,0);
+  node.q2("q2"); q2.c = q0.c + (2u,0);
+  node.q3("q3"); q3.c = q0.c + (3u,0);
+
+  makestart(q0);
+  makefinal(q0,q1,q2);
+
+  % draw the nodes
+  drawboxed(q0,q1,q2,q3);
+  edge(q0,q1,45,ONE);
+  edge(q1,q0,45,ZERO);
+  edge(q1,q2,2,ONE);
+  edge(q2,q3,2,ZERO);
+  loop(q0,down,ZERO);
+  loop(q2,down,ONE);
+  loop(q3,down,ZEROONE);
+      
+
+
+\end{emp}
+
+Now we do the $L_1\cup L_2$.
+
+\begin{emp}(0,0)
+%% first DFA 
+  node.q0("q0"); q0.c = origin;
+  node.q1("q1"); q1.c = q0.c + (u,0);
+  node.q2("q2"); q2.c = q0.c + (2u,0);
+  node.q3("q3"); q3.c = q0.c + (3u,0);
+
+  makefinal(q0,q1,q2);
+
+  % draw the nodes
+  drawboxed(q0,q1,q2,q3);
+  edge(q0,q1,45,ONE);
+  edge(q1,q0,45,ZERO);
+  edge(q1,q2,2,ONE);
+  edge(q2,q3,2,ZERO);
+  loop(q0,down,ZERO);
+  loop(q2,down,ONE);
+  loop(q3,down,ZEROONE);
+  
+%% second one.
+
+
+  node.q4("q4"); q4.c = q0.c + (0,-1.5u);
+  node.q5("q5"); q5.c = q0.c + (u,-1.5u);
+  node.q6("q6"); q6.c = q0.c + (2u,-1.5u);
+  node.q7("q7"); q7.c = q0.c + (3u,-1.5u);
+  node.q8("q8"); q8.c = q0.c + (4u,-1.5u);
+  node.q9("q9"); q9.c = q0.c + (-u,-.75u);
+  makestart(q9);
+  makefinal(q4);
+
+  % draw the nodes
+  drawboxed(q4,q5,q6,q7,q8,q9);
+  
+  
+  
+  edge(q4,q5,2,ZERO);
+  edge(q5,q6,2,ONE);
+  edge(q6,q7,2,ZERO);
+  edge(q7,q8,2,ONE);
+  edge(q7,q5,-45,ZERO);
+  edge(q6,q4,75,ONE);
+    edge(q9,q0,45,E);
+    edge(q9,q4,-45,E);
+  loop(q8,down,ZEROONE);
+  loop(q4,down,ONE);
+  loop(q5,down,ZERO);
+\end{emp}
+
+\section*{Exercise 1.9b (3 points)}
+
+\subsection*{Problem}
+
+Use the construction given in the proof of Theorem~1.47 to give the
+state diagrams of NFAs recognizing the concatenation of the
+languages given.
+
+\begin{itemize}
+\item[b.] Language: $L_1\circ L_2$ where $L_1$ is the language from
+1.6b and $L_2$ is the language from 1.6m \\ (note: both language are
+from assignment 1a)
+
+Language from 1.6b: $\{w:w$ contains at least three $1$s$\}$
+
+Language from 1.6m: The empty set
+\end{itemize}
+
+\subsection*{Solution}
+
+First We do L1. 
+
+\begin{emp}(0,0)
+  node.q0("q0"); q0.c = origin;
+  node.q1("q1"); q1.c = q0.c + (u,0);
+  node.q2("q2"); q2.c = q0.c + (2u,0);
+  node.q3("q3"); q3.c = q0.c + (3u,0);
+
+  makestart(q0);
+  makefinal(q3);
+
+  % draw the nodes
+  drawboxed(q0,q1,q2,q3);
+  edge(q0,q1,2,ONE);
+
+  edge(q1,q2,2,ONE);
+  edge(q2,q3,2,ONE);
+  loop(q0,down,ZERO);
+  loop(q1,down,ZERO);
+  loop(q2,down,ZERO);
+  loop(q3,down,ZEROONE);
+\end{emp}
+
+Now we Draw L2.
+
+
+\begin{emp}(0,0)
+  node.q0("q0"); q0.c = origin;
+    makestart(q0);
+    makefinal(q0);
+    loop(q0,down,ZEROONE);
+    drawboxed(q0);
+\end{emp}
+
+Next, we do$L_1\circ L_2$.
+
+\begin{emp}(0,0)
+  node.q0("q0"); q0.c = origin;
+  node.q1("q1"); q1.c = q0.c + (u,0);
+  node.q2("q2"); q2.c = q0.c + (2u,0);
+  node.q3("q3"); q3.c = q0.c + (3u,0);
+  node.q4("q4"); q4.c = q0.c + (4u,0);
+  makestart(q0);
+
+
+  % draw the nodes
+  drawboxed(q0,q1,q2,q3,q4);
+  edge(q0,q1,2,ONE);
+
+  edge(q1,q2,2,ONE);
+  edge(q2,q3,2,ONE);
+  loop(q0,down,ZERO);
+  edge(q3,q4,2,E);
+  loop(q1,down,ZERO);
+  loop(q2,down,ZERO);
+  loop(q3,down,ZEROONE);
+  loop(q4,down,ZEROONE);
+\end{emp}
+\section*{Exercise 1.16 (6 points)}
+
+\subsection*{Problem}
+
+Use the construction given in Theorem~1.39 to convert the following
+two nondeterministic finite automata to equivalent deterministic
+finite automata.
+
+\begin{center}
+\begin{tabular}{cc}
+\begin{emp}(0,0)
+  bignodes;
+  u := 1.5cm;
+  node.a1("1"); a1.c=(0,0);
+  node.a2("2"); a2.c=(0,-u);
+  makestart(a1); makefinal(a1);
+  drawboxed(a1,a2);
+  edge(a1,a2,curve,AB);
+  edge(a2,a1,curve,B);
+  loop(a1,right,A);
+\end{emp}
+&
+\qquad\begin{emp}(0,0)
+  bignodes;
+  u := 1.5cm;
+  s := u*sqrt(2);
+  node.b1("1"); b1.c=(0,0);
+  node.b2("2"); b2.c=(s,0);
+  node.b3("3"); b3.c=(.5s,-u);
+  makestart(b1); makefinal(b2);
+  drawboxed(b1,b2,b3);
+  edge(b1,b2,curve,E);
+  edge(b2,b1,curve,A);
+  edge(b1,b3,right,A);
+  edge(b3,b2,right,AB);
+  loop(b3,right,B);
+\end{emp}
+\\
+\textbf{(a)} & \qquad\textbf{(b)}
+\end{tabular}
+\end{center}
+
+\subsection*{Solution}
+Solution for a.
+
+\begin{emp}(0,0)
+  node.q0("1"); q0.c = origin;
+  node.q1("2"); q1.c = q0.c + (0,-u);
+  node.q2("12"); q2.c = q0.c + (u,0);
+  node.q3(btex 1$\emptyset$ etex); q3.c = q0.c + (2u,0);
+    node.q4(btex $\emptyset$ etex); q4.c = q0.c + (2u,-u);
+
+  makestart(q0);
+  makefinal(q3,q0);
+
+  % draw the nodes
+  drawboxed(q0,q1,q2,q3,q4);
+  edge(q0,q1,45,B);
+  edge(q1,q0,45,B);
+  edge(q0,q2,2,A);
+  edge(q2,q3,45,A);
+  edge(q3,q2,45,A);
+  edge(q1,q4,2,A);
+  loop(q4,right,AB);
+\end{emp}
+
+
+
+
+Solution for B.
+
+\begin{emp}(0,0)
+  node.q0("12"); q0.c = origin;
+  node.q1("31"); q1.c = q0.c + (0,-u);
+  node.q2(btex $\emptyset$ etex); q2.c = q0.c + (u,0);
+  node.q3("32"); q3.c = q0.c + (u,-u);
+
+
+  makestart(q0);
+  makefinal(q3,q0);
+
+  % draw the nodes
+  drawboxed(q0,q1,q2,q3);
+  edge(q0,q1,-2,A);
+  edge(q1,q3,-2,AB);
+  edge(q0,q2,2,B);
+  edge(q3,q0,-2,A);
+
+
+  loop(q3,down,B);
+  loop(q2,right,AB);
+  loop(q1,down,B);
+
+\end{emp}
+
+\end{empfile}
+\immediate\write18{mpost -tex=latex \jobname}
+\end{document}
