@@ -1,0 +1,192 @@
+%
+% Assignment 2a for CS3530 Computational Theory:
+% Regular Expressions
+% Fall 2017
+%
+% Problems taken from Sipser
+%
+
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{ae,aecompl}
+\usepackage{emp,ifpdf}
+\usepackage{graphicx}
+\usepackage{enumerate}
+
+\ifpdf\DeclareGraphicsRule{*}{mps}{*}{}\fi
+
+\empprelude{input boxes; input theory}
+
+% skip for paragraphs, don't indent
+\parskip 6pt plus 1pt
+\parindent=0pt
+\raggedbottom
+\newenvironment{indentlist}{\begin{list}{}{\addtolength{\itemsep}{0.5\baselineskip}}}{\end{list}}
+
+\begin{document}
+\begin{empfile}
+
+\begin{center}
+\textbf{\Large CS 3530: Assignment 2a} \\[2mm]
+Fall 2017
+\end{center}
+
+\raggedright
+
+\section*{Exercise 1.12 (6 points)}
+
+\subsection*{Problem}
+
+Let $D=\{w:w$ contains an even number of $a$'s and an odd number of
+$b$'s and does not contain the substring $ab\}$. Give a DFA with
+five states that recognizes $D$ and a regular expression that
+generates $D$. (Suggestion: Describe $D$ more simply).
+
+\subsection*{Solution}
+    \newcommand{\mystar}{{\fontfamily{lmr}\selectfont$\star$}}
+Let $M$ be a DFA, that recognizes the laguage $D$.\newline
+Since we do not want to include the substring \{ab\} and we dont want an $a$ at the begninng then We can also think about $D$ = $b(bb)$* $\cup$ ($aa$)*\newline
+
+$M$
+
+\begin{emp}(0,0)
+  t := 2cm;
+  node.q0("0"); q0.c = origin;
+  node.q1("1"); q1.c = q0.c + (t,0);
+  node.q2("2"); q2.c = q0.c + (2t,0);
+  node.q3("3"); q3.c = q0.c + (3t,0);
+  node.q4("4"); q4.c = q0.c + (1.5t,1.5t);
+  makestart(q0);
+  makefinal(q1,q3);
+  % draw the nodes
+  drawboxed(q0,q1,q2,q3,q4);
+  
+  edge(q0,q4,2,A);
+  edge(q0,q1,curve,B);
+  edge(q1,q0,curve,B);
+  edge(q1,q2,2,A);
+  edge(q2,q3,curve,A);
+  edge(q3,q2,curve,A);
+  edge(q2,q4,2,B);
+  edge(q3,q4,2,B);
+  loop(q4,up,AB);
+\end{emp}
+
+The regular expression that generates $D$ output is $b$($b$$b$)*($a$$a$)*
+
+\section*{Exercise 1.18 (7 points)}
+
+\subsection*{Problem}
+
+Give regular expressions generating the languages of Exercise~1.6.
+
+For all following examples $\Sigma$ = \{1,0\}, and $1^+$ = 11* or any entry that does not have $\varepsilon$ tranistion.
+
+\begin{enumerate}[\bfseries a.]
+\item $\{w: w$ begins with a $1$ and ends with a $0\}$
+
+\textbf{Solution}
+
+$R$ = 1 $\Sigma$*0
+
+\item $\{w: w$ contains at least three $1$s$\}$
+
+\textbf{Solution}
+
+$\Sigma$*1$\Sigma$*$\Sigma$$\Sigma$
+
+\item $\{w: w$ contains the substring $0101$, i.e., $w=x0101y$ for
+some $x$ and $y\}$
+
+\textbf{Solution}
+$\Sigma$*0101$\Sigma$* 
+
+\item $\{w: w$ has length at least $3$ and its third symbol is a $0\}$
+
+\textbf{Solution}
+$\Sigma\Sigma$0$\Sigma$*
+
+\item $\{w: w$ starts with $0$ and has odd length, or starts with
+$1$ and has even length$\}$
+
+\textbf{Solution}
+1$\Sigma \cup $ 0 $\Sigma\Sigma$*
+
+\item $\{w: w$ doesn't contain the substring $110\}$
+
+\textbf{Solution}
+0*($10^+$*)*1*
+
+\item $\{w:$ the length of $w$ is at most $5\}$
+
+\textbf{Solution}
+($\varepsilon \cup \Sigma)^5$
+
+\item $\{w: w$ is any string except $11$ and $111\}$
+
+\textbf{Solution}
+$\varepsilon\cup\Sigma\cup$0$\Sigma\cup$ 10 $\cup 0\Sigma\Sigma\cup 110 \Sigma^3\Sigma^+$
+
+\item $\{w:$ every odd position of $w$ is a $1\}$
+
+\textbf{Solution}
+
+(1$\Sigma$)*($\varepsilon \cup $1)
+
+\item $\{w: w$ contains at least two $0$s and at most one $1\}$
+
+\textbf{Solution}
+$00^+\cup100^+\cup0^+\cup0^+ 10^+\cup00^+1$
+
+
+\item $\{\varepsilon, 0\}$
+
+\textbf{Solution}
+0 $\cup \varepsilon$
+
+\item $\{w: w$ contains an even number of $0$s, or contains exactly
+two $1$s$\}$
+
+\textbf{Solution}
+1*(01*01*)$\cup$ 0*10*10*
+
+\item The empty set
+
+\textbf{Solution}
+$R$ = $\emptyset$
+
+\item All strings except the empty string
+
+\textbf{Solution}
+$R$ = $\Sigma^+$
+\end{enumerate}
+
+\section*{Problem 1.31 (7 points)}
+
+\subsection*{Problem}
+
+For any string $w=w_1w_2\cdots w_n$, the \textbf{\textit{reverse}}
+of $w$, written $w^\mathcal{R}$, is the string $w$ in reverse order,
+$w_n\cdots w_2w_1$. For any language $A$, let
+$A^\mathcal{R}=\{w^\mathcal{R}: w\in A\}$. Show that if $A$ is
+regular, so is $A^\mathcal{R}$.
+
+\subsection*{Solution}
+$M=(Q_1,\Sigma,\delta,q_1,F)$ a DFA that recognizes $A$.\newline
+Lets build a NFA $M^1$ for $A^R$. 
+reverse all $M$. \newline
+set start state for $M$ as the only accept state. \newline
+the new start state $q_0^1$ for $M^1$ we add $\varepsilon$ transitions to each state of $M^1$ just like $M$. 
+our arugment can be if there is a path in $M$ from start to accept iff there is a path in $M^1$. \newline
+we can also say that $M$ is regular and recognizes $A^R$ then $M^1$ is regualar and accepts $A^R$.
+
+
+
+\end{empfile}
+\immediate\write18{mpost -tex=latex \jobname}
+\end{document}
