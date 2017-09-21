@@ -1,0 +1,185 @@
+%
+% Assignment 2b for CS3530 Computational Theory:
+% Regular Expressions
+% Fall 2017
+%
+% Problems taken from Sipser
+%
+
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{ae,aecompl}
+\usepackage{emp,ifpdf}
+\usepackage{graphicx}
+\usepackage{enumerate}
+
+\ifpdf\DeclareGraphicsRule{*}{mps}{*}{}\fi
+
+\empprelude{input boxes; input theory}
+
+% skip for paragraphs, don't indent
+\parskip 6pt plus 1pt
+\parindent=0pt
+\raggedbottom
+\newenvironment{indentlist}{\begin{list}{}{\addtolength{\itemsep}{0.5\baselineskip}}}{\end{list}}
+
+\begin{document}
+\begin{empfile}
+
+\begin{center}
+\textbf{\Large CS 3530: Assignment 2b} \\[2mm]
+Fall 2017
+\end{center}
+
+\raggedright
+
+\section*{Exercise 1.21 (4 points)}
+
+\subsection*{Problem}
+
+Use the procedure described in Lemma~1.60 to convert the following
+finite automata to regular expressions. When ripping states, rip
+state 1 first, then state 2, then state 3.
+
+et\begin{center}
+\begin{emp}(0,0)
+  mediumnodes;
+  u := 1.5cm;
+  udiag := 2u/sqrt(3);
+
+  node.q1("1"); q1.c = (0,0);
+  node.q2("2"); q2.c = (0,-u);
+  makestart(q1);
+  makefinal(q2);
+  drawboxed(q1,q2);
+  loop(q1,right,A);
+  edge(q1,q2,curve,B);
+  edge(q2,q1,curve,B);
+  loop(q2,right,A);
+  label.bot("(a)", q2.s+(0,-12pt));
+
+  node.r1("1"); r1.c = (2u, 0);
+  node.r2("2"); r2.c = (2u + udiag, 0);
+  node.r3("3"); r3.c = (2u + 0.5udiag, -u);
+  makestart(r1);
+  makefinal(r1,r3);
+  drawboxed(r1,r2,r3);
+  edge(r1,r2,left,AB);
+  edge(r2,r3,curve,B);
+  edge(r3,r2,curve,B);
+  edge(r3,r1,left,A);
+  loop(r2,right,A);
+  label.bot("(b)", r3.s+(0,-12pt));
+\end{emp}
+\end{center}
+
+\subsection*{Solution}
+
+(a)- (a $\cup$ ba*b) ba* \newline
+(b)- ($\varepsilon \cup$ (a$\cup$ b)a*b(b$\cup$a(a$\cup$b)a*b)* $\varepsilon \cup$ a)
+
+\section*{Exercise 1.28c (4 points)}
+
+\subsection*{Problem}
+
+Convert the following regular expressions to NFAs using the
+procedure given in Theorem~1.54. In all parts $\Sigma=\{a,b\}$.
+Note: $a^+$ is defined as $aa^*$, and should be constructed as the
+concatenation of $a$ with $a^*$. Do not simplify, and do not skip
+steps. You only need to show the final state diagram.
+
+\begin{enumerate}
+\item[\bfseries c.] $(a\cup b^+)a^+b^+\equiv(a\cup bb^*)aa^*bb^*$
+\end{enumerate}
+
+\subsection*{Solution}
+
+\section*{Exercise 1.29b (6 points)}
+
+\subsection*{Problem}
+
+Use the pumping lemma to show that the following languages are not regular.
+\begin{enumerate}
+\item[\bfseries b.] $A_2=\{www:w\in\{a,b\}^*\}$
+\end{enumerate}
+
+\subsection*{Solution}
+
+Assume that $A_2=\{www:w\in\{a,b\}^*\}$ is a regular language, and $p$ is pumping length and $p$ > 0 \newline
+Let string s = $a^P ba^P ba^P b$
+let $x = a^Pb$, $y = a^Pb$, $z = a^Pb$\newline
+when P=1 then s = $a^P ba^P ba^P b$, that means $xy^1z \in A_2$. \newline
+when P=2 then s = $a^P b(a^P b)^2 a^P b$ $xy^2z \notin A_2$. \newline
+that means we can pump more and get the same state, Indicating that $A_2$ is a non regular languages.
+
+\section*{Problem 1.43 (6 points)}
+
+\subsection*{Problem}
+
+Let $A$ be any language. Define \textit{DROP-OUT}$(A)$ to be the
+language containing all strings that can be obtained by removing one
+symbol from a string in $A$. Thus, \textit{DROP-OUT}$(A)=\{xz:
+xyz\in A$ where $x,z\in\Sigma^*,y\in\Sigma\}$. Show that the class
+of regular languages is closed under the \textit{DROP-OUT}
+operation. Give both a proof by picture and a more formal proof by
+construction as in Theorem~1.47.
+
+\subsection*{Solution}
+Let's Assume that {DROP-OUT}$(A)=\{xz:
+xyz\in A$ where $x,z\in\Sigma^*,y\in\Sigma\}$. \newline
+if $A$ is regular then DROP-OUT($A$) is also regular.
+Let's prove that A is regular. let $A =(Q_1,\Sigma,\delta_1,q_1,F_1)$ , then $M =(Q_1,\Sigma,\delta_1,q_1,F_1)$ and that is regular language, can be presented by the following DFA.\newline
+
+\begin{emp}(0,0)
+  t := 2cm;
+  node.q0(""); q0.c = origin;
+  node.q1(""); q1.c = q0.c + (t,0);
+  makestart(q0);
+  makefinal(q1);
+  % draw the nodes
+  drawboxed(q0,q1);
+  edge(q0,q1,curve,A);
+  edge(q1,q0,curve,B);
+\end{emp}
+
+Let's say we can remove a symbol from $M$, then $M^1$ NFA would look like.
+
+\begin{emp}(0,0)
+
+  t := 2cm;
+  node.q0(""); q0.c = origin;
+  node.q1(""); q1.c = q0.c + (t,0);
+
+  % draw the nodes
+  drawboxed(q0,q1);
+  edge(q0,q1,curve,A);
+  edge(q1,q0,curve,B);
+  
+  
+  
+    t := 2cm;
+  node.q3(""); q3.c =  q0.c + (0,1t) ;
+  node.q4(""); q4.c = q0.c + (t,1t);
+ makestart(q3);
+  makefinal(q1);
+  % draw the nodes
+  drawboxed(q3,q4);
+  edge(q3,q4,curve,A);
+   edge(q3,q1,curve,btex $\varepsilon$ etex);
+      edge(q3,q0,curve,btex $\varepsilon$ etex);
+  edge(q4,q3,curve,B);
+\end{emp}
+
+As You can see we can do $M^1$ that have skipped a symbol recongnize the same language as the orignal $M$.
+Formally, we can say that Let $S$ be a string of length $P$.Then $\delta (q_0, S)$ of $M$ = $\delta (q_0, S) of M^1$ if and only if.
+$(q_0, S)$ for $M^1$ is $q_1$ which is same as language $M$.\newline
+Then $M^1$ must be regular.
+
+\end{empfile}
+\immediate\write18{mpost -tex=latex \jobname}
+\end{document}
