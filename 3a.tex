@@ -1,0 +1,131 @@
+%
+% Assignment 3a for CS3530 Computational Theory:
+% Regular Languages
+% Fall 2017
+%
+% Problems taken from Sipser
+%
+
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{ae,aecompl}
+\usepackage{emp,ifpdf}
+\usepackage{graphicx}
+\usepackage{enumerate}
+
+\ifpdf\DeclareGraphicsRule{*}{mps}{*}{}\fi
+
+\empaddtoTeX{\usepackage{amsmath}}
+\empprelude{input boxes; input theory}
+
+% skip for paragraphs, don't indent
+\parskip 6pt plus 1pt
+\parindent=0pt
+\raggedbottom
+\newenvironment{indentlist}{\begin{list}{}{\addtolength{\itemsep}{0.5\baselineskip}}}{\end{list}}
+
+\begin{document}
+\begin{empfile}
+
+\begin{center}
+\textbf{\Large CS 3530: Assignment 3a} \\[2mm]
+Fall 2017
+\end{center}
+
+\raggedright
+
+\section*{Problem 1.33 (10 points)}
+
+\subsection*{Problem}
+
+\newcommand{\col}[2]{\genfrac{[}{]}{0pt}{}{\,#1\,}{\,#2\,}}
+Let
+$$ \Sigma_2=\left\{\col{0}{0},\col{0}{1},\col{1}{0},\col{1}{1}\right\}. $$
+Here, $\Sigma_2$ contains all columns of $0$s and $1$s of height
+two. A string of symbols in $\Sigma_2$ gives two rows of $0$s and
+$1$s. Consider each row to be a binary number and let
+$$ C=\{w\in\Sigma_2^*:\text{ the bottom row of }w\text{ is three times the top row}\}$$
+For example, $\col{0}{0}\col{0}{1}\col{1}{1}\col{0}{0}\in C$, but
+$\col{0}{1}\col{0}{1}\col{1}{1}\notin C$. Show that $C$ is regular.
+(You may assume the result claimed in Problem~1.31.)
+
+\subsection*{Solution}
+
+regular languages are closed under reversal and read backwards.lets say 011 = 3, and three times 011 = 1001,  is also equal to the origanl 011 + 0110 = 1001.
+Then we can conclude that top row is $T_n$ and bottom for $B_n$, where n = 0,1,2...$n-1$. can be satisfied by this conditions. \newline where $B_n$ = $T_n$ + $T_n-1$.\newline 
+we can also determine that $B_n$ values are dependent on $T_n$ values. Then in order to do the DFA to determine if it's regular we have to have a dump state or an unaccepted entire that would not lead to the accept state.
+let  a = $\col{0}{0}, b = \col{0}{1}, c= \col{1}{0}, d= \col{1}{1}$
+
+\begin{emp}(0,0)
+  t := 2cm;
+  node.q0("qa"); q0.c = origin;
+  node.q1("qb"); q1.c = q0.c + (t,0);
+  node.q2("qd"); q2.c = q0.c + (t,t);
+  node.q3("qc"); q3.c = q0.c + (0,t);
+  node.q4("q4"); q4.c = q0.c + (2t,.5t);
+
+  makestart(q0);
+  makefinal(q0);
+  % draw the nodes
+  drawboxed(q0,q1,q2,q3,q4);
+  
+  loop(q0, down,A);
+  edge(q0,q1,curve, btex d etex);
+  edge(q1,q0,curve,B);
+  edge(q1,q2,2,C);
+  edge(q1,q4,2,btex a,d etex);
+  edge(q0,q4,-65,btex b,c etex);
+  edge(q3,q4,80,btex a,d etex);
+  edge(q2,q3,curve,A);
+  edge(q3,q2,curve,C);
+  edge(q2,q4,2,btex bc etex);
+  edge(q3,q0,2,B);
+  loop(q2,up,D);
+\end{emp}
+
+
+Since the given DFA accepts all strings in $C$ language and rejects all strings that are not in C language, we just proved that $C$ is regular.
+% Note: to draw the [0,1] columns in a diagram, use this:
+%
+%   picture oo, ol, lo, ll;
+%   oo = btex $\genfrac{[}{]}{0pt}{}{\,0\,}{\,0\,}$ etex;
+%   ol = btex $\genfrac{[}{]}{0pt}{}{\,0\,}{\,1\,}$ etex;
+%   lo = btex $\genfrac{[}{]}{0pt}{}{\,1\,}{\,0\,}$ etex;
+%   ll = btex $\genfrac{[}{]}{0pt}{}{\,1\,}{\,1\,}$ etex;
+%
+% Then you can use these as regular labels, e.g.:
+%
+%   edge(q0,q1,curve,ol);
+%
+% (0 and 1 are not legal variable names, so I used o and l instead)
+
+
+\section*{Problem 1.46c (10 points)}
+
+\subsection*{Problem}
+
+Prove that the following languages are not regular. You may use the
+pumping lemma and the closure of the class of regular languages
+under union, intersection, and complement.
+
+\begin{enumerate}
+\item[\bfseries c.] $\{w:w\in\{0,1\}^*$ is not a
+palindrome$\}$\footnote{A \textit{\textbf{palindrome}} is a string
+that reads the same forward and backward.}
+\end{enumerate}
+
+\subsection*{Solution}
+
+Let's assume that $L$ is regular then compliment of the language  is also regular and lets represent that complement language with a $C$, that also means that $C$ is a palindrome language that can be read backwards\newline
+Let $S$ a string = xyz $\in$ $L$. $S$ = 001 \newline
+Let x= $0^p$, y= $0^k$, z= $1^p$. and $k$,$p$ $>$ 0.\newline
+Then we can conclude that $S$ is the not the same string backwards since $k-p < p$. and it does not belong to $C$ language. by the pumping lemma we can say that $C$ is not a regular language. and therefore L is not a regular language.
+
+\end{empfile}
+\immediate\write18{mpost -tex=latex \jobname}
+\end{document}
