@@ -1,0 +1,100 @@
+%
+% Assignment 3b for CS3530 Computational Theory:
+% Regular Languages
+% Fall 2017
+%
+% Problems taken from Sipser
+%
+
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{ae,aecompl}
+\usepackage{emp,ifpdf}
+\usepackage{graphicx}
+\usepackage{enumerate}
+
+\ifpdf\DeclareGraphicsRule{*}{mps}{*}{}\fi
+
+\empaddtoTeX{\usepackage{amsmath}}
+\empprelude{input boxes; input theory}
+
+% skip for paragraphs, don't indent
+\parskip 6pt plus 1pt
+\parindent=0pt
+\raggedbottom
+\newenvironment{indentlist}{\begin{list}{}{\addtolength{\itemsep}{0.5\baselineskip}}}{\end{list}}
+
+\begin{document}
+\begin{empfile}
+
+\begin{center}
+\textbf{\Large CS 3530: Assignment 3b} \\[2mm]
+Fall 2017
+\end{center}
+
+\raggedright
+
+\section*{Exercise 2.9 (10 points)}
+
+\subsection*{Problem}
+
+Give a context-free grammar that generates the language
+$$
+A=\{a^ib^jc^k:i=j\text{ or }j=k\text{ where }i,j,k\geq 0\}.
+$$
+
+For all CFGs, describe the role that each rule performs as well as
+giving the actual rule.
+
+\subsection*{Solution}
+The language $
+A=\{a^ib^jc^k:i=j\text{ or }j=k\text{ where }i,j,k\geq 0\}.$ can be presented as follows: \newline
+$A$ = $A_1 \cup A_2$. \newline
+$A_1 =\{a^ib^jc^k:i=j where i,j,k\geq 0\}$\newline
+$A_2 =\{a^ib^jc^k:j=k$ $ where  i,j,k\geq 0\}$\newline
+Let $S_1$ is the CGF of $A_1$, and $S_2$ for $A_2$.\newline
+$A_1$ where $i=j$ meaing that the number of $a's$ and $b's$ must be equal, we can generate the following $S_1$ CGF\newline
+This start adds a $\{c\}$ or goes to state $B$ or $\varepsilon$. and the state $B$ adds the same number of $a's$ and $b's$ or does nothing\newline\newline
+$S_1$ = $S_1 c$ | $B$ | $\varepsilon$.\newline
+$B$ = $ aBb$  | $\varepsilon$.\newline 
+$S_2$ for $A_2$ is the same as $S_1$ but for $j = k$, $b = c$ \newline
+This role adds a $\{a\}$ or goes to state $C$ or $\varepsilon$.  $C$ adds an equal number of $c's$ and $b's$ \newline\newline
+$S_2$ = $aS_2$ | $C$ | $\varepsilon$.\newline
+$C$ = $ bCc$  | $\varepsilon$.\newline 
+
+Let $S$ = $S_1 \cup S_2$ = $A$, then $S$ can present $w | a^ib^jc^k$ using either $S_1$ or $S_2$. Therefore the context free grammar for $A$ is ambiguous.
+
+
+\section*{Problem 1.47 (10 points)}
+
+\subsection*{Problem}
+
+Let $\Sigma=\{1,\#\}$ and let
+
+$$ Y=\{w:w=x_1\#x_2\#\cdots\#x_k\text{ for }k\geq0\text{, each }x_i\in1^*\text{, and }x_i\neq x_j\text{ for }i\neq j\} $$
+
+Prove that $Y$ is not regular.
+
+\subsection*{Solution}
+
+First, we assume that $Y$ is regular language and try to get a contradiction.\newline
+let $P$ be the pumping lemma length for the language $Y$\newline
+$S$ = $x_1$ \# $x_2$ for $k = 2$ and $x_1$ \# $x_2$.\newline
+let $x_1$ = $1^P$ 1 and $x_2$= 11 $1^P$. $S$ = xyz = $1^P$1\#11$1^P$\newline
+let $t$ = $1^P$\# $1^P+i$...$1^2P$\newline
+$t$ = $t_0$\#$t_1$ \# ... $t_k$\newline
+let $xyz$ = $t$, and we must satisfy the pumping lemma by $|y|$ > 0 and $|xy|$ $\leq$ $p$ \newline
+$P$=2 for x$y^P$z Since 1 $\leq$ $|y|$ $\leq$ $P$. there fore $p + 1 $ $\leq$ $p$ + $|y|$ $\leq$ $2p$ when $|y|$ increases that makes a string that is not pumpable into the language of $Y$ and we can say that $Y$ is not a regular language. \newline
+
+
+
+
+
+\end{empfile}
+\immediate\write18{mpost -tex=latex \jobname}
+\end{document}
