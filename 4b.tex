@@ -1,0 +1,132 @@
+%
+% Assignment 4b for CS3530 Computational Theory:
+% Context-free Grammars and Pushdown Automata
+% Fall 2017
+%
+% Problems taken from Sipser
+%
+
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{ae,aecompl}
+\usepackage{emp,ifpdf}
+\usepackage{graphicx}
+\usepackage{enumerate}
+
+\ifpdf\DeclareGraphicsRule{*}{mps}{*}{}\fi
+
+\empaddtoTeX{\usepackage{amsmath}}
+\empprelude{input boxes; input theory}
+
+% skip for paragraphs, don't indent
+\parskip 6pt plus 1pt
+\parindent=0pt
+\raggedbottom
+
+% a list environment with no bullets or numbers
+\newenvironment{indentlist}{\begin{list}{}{\addtolength{\itemsep}{0.5\baselineskip}}}{\end{list}}
+
+\begin{document}
+\begin{empfile}
+
+\begin{center}
+\textbf{\Large CS 3530: Assignment 4b} \\[2mm]
+Fall 2017
+\end{center}
+
+\raggedright
+
+\section*{Problem 2.44 (20 points)}
+
+\subsection*{Problem}
+
+If $A$ and $B$ are languages, define $A\diamond B=\{xy:x\in A$ and
+$y\in B$ and $|x|=|y|\}$. Show that if $A$ and $B$ are regular
+languages, then $A\diamond B$ is a CFL.
+
+Note: a formal proof is not necessary; a detailed description of a
+suitable construction and an informal argument will suffice.
+
+\subsection*{Solution}
+Lets assume that $M_1$ will recognize the regular language $A$, and $M_2$ recognizes $B$, and by Therom we can assume that $A$ and $B$ are CF.\newline
+Informally we can do $A$ $\diamond$ $B$ by keeping track of |$x$| in $M_1$ and count again in $M_2$ but both do not know what last transition was.\newline
+we can use the stack to count the length of the string input for $M_1$, before transitioning to the start state $q_0$ in $M_1$ we need to push a \$ to the stack ($q_0$, \$). \newline
+basiclly we use \$ to mark the bottom of the stack or check for it. we can add $a$, where $a$ is pushable from and popable out of the stack for $M_1$ and $M_2$, lets say we push a 1 to the stack in $M_1$\newline
+after some number of |$y$| it will non-deterministically reach a final state or an accept state, and then after that it transitions to the start state of $M_2$. \newline
+meaning we can only reach start state of $M_2$ only iff we reached an accepted state in $M_1$, now we can start pop off the stack the same $a$ that pushed into the stack in $M_1$, in this case we pop 1 from the stack ($q_n$, 1). \newline
+and when $M_2$ reaches an accept state when test for bottom of the stack again if it has been reached as well. ($q_f$, $\varepsilon$). And that is when |$y$| = |$x$| which is  $A$ $\diamond$ $B$ operation. \newline
+Now we need to define a suitable construction PDA for $M_1$ and $M_2$ and $\diamond$ operation. Let $M_3$ that recognizes $A$ $\diamond$ $B$. \newline
+Assume that $M_1$ and $M_2$ can be presented as follows, such $A^+$,$B^+$ and $C^+$ are transitions that pushes a 1 and $A^-$, $B^-$ and $C^-$ transitions the pops off a 1. since tape squares are giving me hard time.
+
+ \begin{emp}(10,0)
+ smallnodes;
+  t := 1.2cm;
+  node.q0("0"); q0.c = origin;
+  node.q1("1"); q1.c = q0.c + (t,0);
+  node.q2("2"); q2.c = q0.c + (t,t);
+  makestart(q0);
+  makefinal(q2);
+  % draw the nodes
+  drawboxes(q0,q1,q2);
+  
+  edge(q0,q1,-1,btex A etex);
+  edge(q1,q2,1,btex C etex);
+  edge(q0,q2,1,btex B etex);
+\end{emp}
+\newline
+
+     $M_1$
+
+\begin{emp}(10,0)
+ smallnodes;
+  t := 1.2cm;
+  node.q0("0"); q0.c = origin;
+  node.q1("1"); q1.c = q0.c + (0,-t);
+  node.q2("2"); q2.c = q0.c + (t,0);
+  makestart(q0);
+  makefinal(q2);
+  % draw the nodes
+  drawboxes(q0,q1,q2);
+  
+  edge(q0,q1,-1,btex A etex);
+  edge(q1,q2,-1,btex C etex);
+  edge(q0,q2,1,btex B etex);
+\end{emp}
+
+    $M_2$ \newline
+Now can do $M_3$, we need to union the states from both $M_1$ and $M_2$ add a new start state for the \$ stack check and add a final state in $M_2$.\newline
+
+\begin{emp}(0,0)
+  mediumnodes;
+  t := 2cm;
+  node.qs("s"); qs.c = (0,0);
+  node.q3("0"); q3.c = qs.c + (0t, -3t);
+  node.qf("f"); qf.c = qs.c + (5t, -3t);
+  node.q0("0"); q0.c = qs.c + (5t, -t);
+  node.q1("1"); q1.c = qs.c + (4t,-t);
+  node.q2("2"); q2.c = qs.c + (5t,0);
+ 
+  node.q4("1"); q4.c = qs.c + (0,-2t);
+  node.q5("2"); q5.c = qs.c + (t,-2t);
+  makestart(qs);
+  makefinal(q5,qf, q0);
+  % draw the nodes
+  drawboxes(q0,q1,q2,q3,q4,q5,qs,qf);
+  edge(q3,q4,1,btex $A^+$ etex);
+  edge(q4,q5,-1,btex $C^+$ etex);
+  edge(q3,q5,1,btex $B^+$ etex);
+  edge(q0,q1,-1,btex $A^-$ etex);
+  edge(q1,q2,1,btex $B^-$ etex);
+  edge(q0,q2,-1,btex $C^-$ etex);
+  edge(qs,q4,1,btex $\varepsilon$, \$ etex);
+  edge(q5,q1,2,btex $\varepsilon$ etex);
+  edge(q0,qf,2,btex $\varepsilon$,$\varepsilon$, \$ etex);
+\end{emp}
+\end{empfile}
+\immediate\write18{mpost -tex=latex \jobname}
+\end{document}
