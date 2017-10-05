@@ -1,0 +1,125 @@
+%
+% Assignment 4a for CS3530 Computational Theory:
+% Context-free Grammars and Pushdown Automata
+% Fall 2017
+%
+% Problems taken from Sipser
+%
+
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{ae,aecompl}
+\usepackage{emp,ifpdf}
+\usepackage{graphicx}
+\usepackage{enumerate}
+
+\ifpdf\DeclareGraphicsRule{*}{mps}{*}{}\fi
+
+\empaddtoTeX{\usepackage{amsmath}}
+\empprelude{input boxes; input theory}
+
+% skip for paragraphs, don't indent
+\parskip 6pt plus 1pt
+\parindent=0pt
+\raggedbottom
+
+% a list environment with no bullets or numbers
+\newenvironment{indentlist}{\begin{list}{}{\addtolength{\itemsep}{0.5\baselineskip}}}{\end{list}}
+
+\begin{document}
+\begin{empfile}
+
+\begin{center}
+\textbf{\Large CS 3530: Assignment 4a} \\[2mm]
+Fall 2017
+\end{center}
+
+\raggedright
+
+\section*{Exercise 2.5b (10 points)}
+
+\subsection*{Problem}
+
+Give informal descriptions and state diagrams of pushdown automata
+for the languages in Exercise~2.4.
+
+\begin{enumerate}
+\item[\textbf{b.}] $\{w:w$ starts and ends with the same symbol$\}$
+\end{enumerate}
+
+\subsection*{Solution}
+
+Context free grammar:\newline
+$S$ $\rightarrow$ 0$A$0 | 1$A$1 | 0 | 1 \newline
+$A$ $\rightarrow$ 0$A$| 1 $A$| $\varepsilon$\newline
+Informal Description:\newline 
+the grammar above gives the roles to $L$, where $S$ can be either 00, 11, 0 or 1 and $A$ can lead to 0 or 1 or $\varepsilon$.\newline
+if the last symbol mathces the one on the stack then no input strings will be accepted. \newline
+Let $q_0$ be the start state and $q_2$ is an accepted states, we can get the following pushdown automata.\newline
+($q_0$,$\varepsilon$, $\varepsilon$) $\rightarrow$ ($q_0$,\$)\newline
+Let B be equal to\newline 
+($q_0$,1,$\varepsilon$)$\rightarrow$ ($q_2$,$\varepsilon$) \newline
+($q_0$,0,$\varepsilon$)$\rightarrow$ ($q_2$,$\varepsilon$) \newline
+($q_1$,0,$\varepsilon$)$\rightarrow$ ($q_1$,$\varepsilon$) \newline
+($q_1$,1,$\varepsilon$)$\rightarrow$ ($q_1$,$\varepsilon$) \newline
+Let A be equal to\newline
+($q_0$,0,$\varepsilon$)$\rightarrow$ ($q_1$,0) \newline
+($q_0$,1,$\varepsilon$)$\rightarrow$ ($q_1$,1) \newline
+Let C be equal to\newline
+($q_1$,0,0)$\rightarrow$ ($q_2$,$\varepsilon$) \newline
+($q_2$,1,1)$\rightarrow$ ($q_2$,$\varepsilon$) \newline
+
+($q_2$,$\varepsilon$,\$)$\rightarrow$ ($q_2$,$\varepsilon$) \newline
+
+\begin{emp}(10,0)
+  t := 2cm;
+  node.q0("0"); q0.c = origin;
+  node.q1("1"); q1.c = q0.c + (0,-t);
+node.q2("2"); q2.c = q0.c + (0,-2t);
+  makestart(q0);
+  makefinal(q2);
+  % draw the nodes
+  drawboxed(q0,q1,q2);
+  
+  edge(q0,q1,1,btex A etex);
+  edge(q1,q2,1,btex C etex);
+  edge(q0,q2,45,btex B etex);
+loop(q1,left, btex B etex);
+
+
+\end{emp}
+
+
+
+\section*{Exercise 2.6b (10 points)}
+
+\subsection*{Problem}
+
+Give context-free grammars generating the following languages.
+
+\begin{enumerate}
+\item[\textbf{b.}] The complement of the language $\{a^n b^n:n\geq 0\}$
+\end{enumerate}
+
+For all CFGs, describe the role that each rule performs as well as
+giving the actual rule.
+
+\subsection*{Solution}
+
+Let $L_1$ be the compliment of the given language L.
+and let $L_1$ = \{$a^n$ $b^m$ : $n$ $\neq$ $m$ \} $\cup$ \{($a$ $\cup$ $ b$)*$ba$($a$ $\cup$ $b$)*\}.\newline
+we can start with the left half of the language to generate the fre grammar for it.\newline
+$S_1$ $\rightarrow$ $a$ $S_1$ $b$ | $T$ | $U$ \newline
+$T$ $\rightarrow$ $aT |a$\newline
+$U$ $\rightarrow$ $Ub|a$ \newline
+Let $S_2$ be the other half of the compliment language of $L$.\newline
+$S_2$ $\rightarrow$ $RbaR$ \newline
+$R$ $\rightarrow$ $RR$ | $a$ | $b$ | $\varepsilon$
+\end{empfile}
+\immediate\write18{mpost -tex=latex \jobname}
+\end{document}
